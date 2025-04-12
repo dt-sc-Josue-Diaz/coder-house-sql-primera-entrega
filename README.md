@@ -20,57 +20,68 @@ DVA (Debit Valuation Adjustment): mide el riesgo de crédito propio (probabilida
 Llegando a XVA  = CVA − DVA.
 
 
-## 📄 Listado de Tablas
+# Base de Datos: DERIVADOS
 
-### 1. Tabla: `POSICION`
+## Descripción
+La base de datos DERIVADOS modela posiciones financieras de productos derivados, sus flujos de efectivo, los factores de riesgo asociados y los modelos utilizados para su valuación. Todas las tablas se relacionan con la tabla principal `POSICION`.
 
-**Descripción:** Contiene información principal de cada operación de derivados.
+---
 
-| Abrev. Campo      | Nombre Completo         | Tipo de Dato     | Tipo de Clave  |
-|-------------------|--------------------------|------------------|----------------|
-| operacion         | ID de Operación          | VARCHAR(50)      | PRIMARY KEY    |
-| fecha             | Fecha de Registro        | DATE             |                |
-| inicio            | Fecha de Inicio          | DATE             |                |
-| fecha_fin         | Fecha de Vencimiento     | DATE             |                |
-| tasa_activa       | Tasa Activa              | DECIMAL(10,6)    |                |
-| tasa_pasiva       | Tasa Pasiva              | DECIMAL(10,6)    |                |
-| modelo_valuacion  | Modelo de Valuación      | VARCHAR(100)     |                |
-| curva_pago_1      | Curva de Pago 1          | VARCHAR(100)     |                |
-| curva_pago_2      | Curva de Pago 2          | VARCHAR(100)     |                |
-| curva_descuento_1 | Curva de Descuento 1     | VARCHAR(100)     |                |
-| curva_descuento_2 | Curva de Descuento 2     | VARCHAR(100)     |                |
+## Entidad-Relación
+- `POSICION` ← principal (PK: id_posicion)
+- `FLUJOS` → relacionada con POSICION (FK: id_posicion)
+- `FACTORES_DE_RIESGO` → relacionada con POSICION (FK: id_posicion)
+- `MODELOS` → relacionada con POSICION (FK: id_posicion)
 
-### 2. Tabla: `FLUJOS`
+---
 
-**Descripción:** Contiene los flujos de efectivo asociados a cada operación.
+## Tablas y campos
 
-| Abrev. Campo     | Nombre Completo       | Tipo de Dato    | Tipo de Clave  |
-|------------------|------------------------|-----------------|----------------|
-| id_flujo         | ID del Flujo           | INT             | PRIMARY KEY    |
-| operacion        | ID de Operación        | VARCHAR(50)     | FOREIGN KEY → POSICION.operacion |
-| fecha_flujo      | Fecha del Flujo        | DATE            |                |
-| monto            | Monto del Flujo        | DECIMAL(18,2)   |                |
-| tipo_flujo       | Tipo de Flujo          | VARCHAR(50)     |                |
+### POSICION
+| Campo               | Abreviatura   | Tipo de Dato      | Clave      |
+|--------------------|---------------|-------------------|------------|
+| id_posicion        | id_posicion   | INT AUTO_INCREMENT| PK         |
+| operacion          | operacion     | VARCHAR(50)       |            |
+| fecha              | fecha         | DATE              |            |
+| inicio             | inicio        | DATE              |            |
+| fecha_fin          | fecha_fin     | DATE              |            |
+| tasa_activa        | tasa_activa   | DECIMAL(5,2)      |            |
+| tasa_pasiva        | tasa_pasiva   | DECIMAL(5,2)      |            |
+| modelo_valuacion   | modelo_valuacion | VARCHAR(50)   |            |
+| curva_pago_1       | curva_pago_1  | VARCHAR(50)       |            |
+| curva_pago_2       | curva_pago_2  | VARCHAR(50)       |            |
+| curva_descuento_1  | curva_descuento_1 | VARCHAR(50)   |            |
+| curva_descuento_2  | curva_descuento_2 | VARCHAR(50)   |            |
 
-### 3. Tabla: `FACTORES_DE_RIESGO`
+---
 
-**Descripción:** Contiene los factores de riesgo que afectan la valuación de los derivados.
+### FLUJOS
+| Campo        | Tipo de Dato      | Clave |
+|--------------|-------------------|-------|
+| id_flujo     | INT AUTO_INCREMENT| PK    |
+| id_posicion  | INT               | FK    |
+| fecha_flujo  | DATE              |       |
+| monto        | DECIMAL(15,2)     |       |
+| tipo_flujo   | VARCHAR(20)       |       |
 
-| Abrev. Campo     | Nombre Completo          | Tipo de Dato     | Tipo de Clave  |
-|------------------|---------------------------|------------------|----------------|
-| id_factor        | ID del Factor de Riesgo   | INT              | PRIMARY KEY    |
-| nombre_factor    | Nombre del Factor         | VARCHAR(100)     |                |
-| tipo_factor      | Tipo de Factor            | VARCHAR(50)      |                |
-| valor_actual     | Valor Actual              | DECIMAL(18,6)    |                |
-| fecha            | Fecha del Valor           | DATE             |                |
+---
 
-### 4. Tabla: `MODELOS`
+### FACTORES_DE_RIESGO
+| Campo         | Tipo de Dato     | Clave |
+|---------------|------------------|-------|
+| id_factor     | INT AUTO_INCREMENT| PK   |
+| id_posicion   | INT              | FK    |
+| tipo_factor   | VARCHAR(50)      |       |
+| valor         | DECIMAL(10,4)    |       |
+| fecha         | DATE             |       |
 
-**Descripción:** Contiene los distintos modelos de valuación utilizados en las operaciones.
+---
 
-| Abrev. Campo     | Nombre Completo          | Tipo de Dato     | Tipo de Clave  |
-|------------------|---------------------------|------------------|----------------|
-| id_modelo        | ID del Modelo             | INT              | PRIMARY KEY    |
-| nombre_modelo    | Nombre del Modelo         | VARCHAR(100)     |                |
-| descripcion      | Descripción del Modelo    | TEXT             |                |
-
+### MODELOS
+| Campo          | Tipo de Dato     | Clave |
+|----------------|------------------|-------|
+| id_modelo      | INT AUTO_INCREMENT| PK   |
+| id_posicion    | INT              | FK    |
+| nombre_modelo  | VARCHAR(100)     |       |
+| version        | VARCHAR(20)      |       |
+| descripcion    | TEXT             |       |
