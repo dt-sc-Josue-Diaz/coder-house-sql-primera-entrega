@@ -1,53 +1,53 @@
-CREATE DATABASE DERIVADOS;
+CREATE DATABASE IF NOT EXISTS DERIVADOS;
 
 USE DERIVADOS;
 
 -- POSICION
-CREATE TABLE POSICION (
+CREATE TABLE IF NOT EXISTS POSICION (
     id_posicion INT PRIMARY KEY AUTO_INCREMENT,
-    operacion VARCHAR(50),
-    fecha DATE,
-    inicio DATE,
-    fecha_fin DATE,
-    tasa_activa DECIMAL(5,2),
-    tasa_pasiva DECIMAL(5,2),
-    modelo_valuacion VARCHAR(50),
-    curva_pago_1 VARCHAR(50),
-    curva_pago_2 VARCHAR(50),
-    curva_descuento_1 VARCHAR(50),
-    curva_descuento_2 VARCHAR(50)
+    operacion VARCHAR(50) NOT NULL,
+    fecha DATE NOT NULL,
+    inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    tasa_activa DECIMAL(5,2) NOT NULL,
+    tasa_pasiva DECIMAL(5,2) NOT NULL,
+    modelo_valuacion VARCHAR(50) NOT NULL,
+    curva_pago_1 VARCHAR(50) NOT NULL,
+    curva_pago_2 VARCHAR(50) NOT NULL,
+    curva_descuento_1 VARCHAR(50) NOT NULL,
+    curva_descuento_2 VARCHAR(50) NOT NULL
 );
 
---- Flujos
-CREATE TABLE FLUJOS (
+-- FLUJOS
+CREATE TABLE IF NOT EXISTS FLUJOS (
     id_flujo INT PRIMARY KEY AUTO_INCREMENT,
-    id_posicion INT,
-    fecha_flujo DATE,
-    monto DECIMAL(15,2),
-    tipo_flujo VARCHAR(20),
+    id_posicion INT NOT NULL,
+    fecha_flujo DATE NOT NULL,
+    monto DECIMAL(15,2) NOT NULL,
+    tipo_flujo VARCHAR(20) NOT NULL,
     FOREIGN KEY (id_posicion) REFERENCES POSICION(id_posicion)
 );
 
-
---- Factores de riesgo
-CREATE TABLE FACTORES_DE_RIESGO (
+-- FACTORES DE RIESGO
+CREATE TABLE IF NOT EXISTS FACTORES_DE_RIESGO (
     id_factor INT PRIMARY KEY AUTO_INCREMENT,
-    id_posicion INT,
-    tipo_factor VARCHAR(50),
-    valor DECIMAL(10,4),
-    fecha DATE,
+    id_posicion INT NOT NULL,
+    tipo_factor VARCHAR(50) NOT NULL,
+    valor DECIMAL(10,4) NOT NULL,
+    fecha DATE NOT NULL,
     FOREIGN KEY (id_posicion) REFERENCES POSICION(id_posicion)
 );
 
---- Modelos
-CREATE TABLE MODELOS (
+-- MODELOS
+CREATE TABLE IF NOT EXISTS MODELOS (
     id_modelo INT PRIMARY KEY AUTO_INCREMENT,
-    id_posicion INT,
-    nombre_modelo VARCHAR(100),
-    version VARCHAR(20),
-    descripcion TEXT,
+    id_posicion INT NOT NULL,
+    nombre_modelo VARCHAR(100) NOT NULL,
+    version VARCHAR(20) NOT NULL,
+    descripcion TEXT NOT NULL,
     FOREIGN KEY (id_posicion) REFERENCES POSICION(id_posicion)
 );
+
 
 /*
 Datos ficticios demostrativos. 
