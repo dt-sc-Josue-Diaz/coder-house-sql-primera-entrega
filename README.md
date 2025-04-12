@@ -1,4 +1,4 @@
-# coder-house-sql-primera-entrega
+Alumno: Luis Josue Díaz Alvarez
 Repositorio para primera entrega de la comisión 75965
 
 # Productos financieros derivados.
@@ -18,6 +18,10 @@ CVA (Credit Valuation Adjustment): mide el riesgo de crédito de la contraparte 
 DVA (Debit Valuation Adjustment): mide el riesgo de crédito propio (probabilidad de que yo no pague).
 
 Llegando a XVA  = CVA − DVA.
+
+# Diagrama entidad relación 
+
+![Imagen gerenerada por Mysql](DER.png)
 
 
 # Base de Datos: DERIVADOS
@@ -87,6 +91,4 @@ La base de datos DERIVADOS modela posiciones financieras de productos derivados,
 | descripcion    | TEXT             |       |
 
 
-# Diagrama entidad relación 
 
-![Imagen gerenerada por Mysql](ER.png)
