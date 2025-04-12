@@ -87,3 +87,6 @@ La base de datos DERIVADOS modela posiciones financieras de productos derivados,
 | descripcion    | TEXT             |       |
 
 
+# Diagrama entidad relación 
+
+![Imagen gerenerada por Mysql](ER.png)
