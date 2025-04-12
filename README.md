@@ -85,3 +85,5 @@ La base de datos DERIVADOS modela posiciones financieras de productos derivados,
 | nombre_modelo  | VARCHAR(100)     |       |
 | version        | VARCHAR(20)      |       |
 | descripcion    | TEXT             |       |
+
+
