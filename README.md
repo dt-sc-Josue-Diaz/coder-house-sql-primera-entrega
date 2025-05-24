@@ -90,5 +90,113 @@ La base de datos DERIVADOS modela posiciones financieras de productos derivados,
 | version        | VARCHAR(20)      |       |
 | descripcion    | TEXT             |       |
 
+# 2da Entrega - Documentación Técnica del Proyecto DERIVADOS
 
+## 1. Listado de Vistas
+
+### 1.1 `vista_posiciones_con_modelo`
+
+- **Descripción detallada**: Esta vista permite visualizar las posiciones de derivados financieras junto con la información del modelo de valuación asociado.
+- **Objetivo**: Proporcionar una visualización conjunta que permita evaluar qué modelo se aplicó a cada operación.
+- **Tablas utilizadas**: 
+  - `POSICION`
+  - `MODELOS`
+
+---
+
+### 1.2 `vista_flujos_futuros`
+
+- **Descripción detallada**: Esta vista muestra todos los flujos de efectivo programados para fechas posteriores a la actual.
+- **Objetivo**: Brindar una visión de los flujos pendientes, útil para la planeación de liquidez y análisis financiero.
+- **Tablas utilizadas**:
+  - `FLUJOS`
+  - `POSICION`
+
+---
+
+### 1.3 `vista_factores_actuales`
+
+- **Descripción detallada**: Muestra los factores de riesgo más recientes por tipo y posición.
+- **Objetivo**: Consultar el estado actual de los factores de riesgo relevantes para el cálculo de valuaciones.
+- **Tablas utilizadas**:
+  - `FACTORES_DE_RIESGO`
+  - `POSICION`
+
+---
+
+## 2. Listado de Funciones
+
+### 2.1 `obtener_duracion_dias(fecha_inicio DATE, fecha_fin DATE)`
+
+- **Descripción detallada**: Calcula el número de días entre dos fechas.
+- **Objetivo**: Obtener la duración de una operación, útil para cálculos de intereses y métricas de riesgo.
+- **Tablas utilizadas**: No accede directamente a tablas; se usa sobre datos de `POSICION`.
+
+---
+
+### 2.2 `calcular_spread(tasa_activa DECIMAL, tasa_pasiva DECIMAL)`
+
+- **Descripción detallada**: Devuelve la diferencia entre la tasa activa y la tasa pasiva.
+- **Objetivo**: Medir el margen financiero de una operación.
+- **Tablas utilizadas**: Datos extraídos de `POSICION`.
+
+---
+
+### 2.3 `es_flujo_positivo(monto DECIMAL)`
+
+- **Descripción detallada**: Evalúa si un flujo es positivo o negativo (retorna 1 o 0).
+- **Objetivo**: Clasificar flujos como ingresos (positivos) o egresos (negativos).
+- **Tablas utilizadas**: Aplicable a datos de `FLUJOS`.
+
+---
+
+## 3. Listado de Stored Procedures
+
+### 3.1 `insertar_nueva_posicion(...)`
+
+- **Descripción detallada**: Inserta una nueva fila en la tabla `POSICION`.
+- **Objetivo**: Automatizar la inserción de datos operativos sin errores manuales.
+- **Tablas involucradas**: `POSICION`
+
+---
+
+### 3.2 `insertar_flujo_para_posicion(id_posicion, fecha_flujo, monto, tipo_flujo)`
+
+- **Descripción detallada**: Agrega un flujo asociado a una operación previamente registrada.
+- **Objetivo**: Registrar los movimientos de caja proyectados.
+- **Tablas involucradas**: `FLUJOS`, `POSICION`
+
+---
+
+### 3.3 `actualizar_valor_factor(id_factor, nuevo_valor)`
+
+- **Descripción detallada**: Modifica el valor de un factor de riesgo específico.
+- **Objetivo**: Mantener actualizada la base de factores con información de mercado.
+- **Tablas involucradas**: `FACTORES_DE_RIESGO`
+
+---
+
+## 4. Triggers
+
+### 4.1 `trg_before_insert_flujos`
+
+- **Descripción detallada**: Evita la inserción de flujos con monto negativo.
+- **Objetivo**: Asegurar la integridad del registro contable.
+- **Tablas afectadas**: `FLUJOS`
+
+---
+
+### 4.2 `trg_after_insert_posicion`
+
+- **Descripción detallada**: Inserta automáticamente un modelo por defecto al registrar una nueva posición.
+- **Objetivo**: Asegurar que toda posición tenga un modelo asociado.
+- **Tablas afectadas**: `POSICION`, `MODELOS`
+
+---
+
+### 4.3 `trg_before_update_factor`
+
+- **Descripción detallada**: Audita cambios en valores de factores de riesgo (registro en log de auditoría si se implementa).
+- **Objetivo**: Trazabilidad de modificaciones críticas en datos de riesgo.
+- **Tablas afectadas**: `FACTORES_DE_RIESGO`
 
