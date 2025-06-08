@@ -2,7 +2,7 @@ Alumno: Luis Josue Díaz Alvarez
 Repositorio para primera entrega de la comisión 75965
 
 # Productos financieros derivados.
-
+## Introducción
 Los productos derivados son instrumentos financieros cuyo valor depende de un activo subyacente. Su principal finalidad es transferir o reducir el riesgo asociado a dicho valor. Históricamente, los derivados pueden rastrearse hasta eventos como la especulación con los precios de los tulipanes en los Países Bajos durante los 1630, o más recientemente, la crisis financiera de 2008.
 
 Durante esta última crisis, surgieron instrumentos como los Credit Default Swaps (CDS), que funcionaban como seguros para cubrir hipotecas. En ese entonces, los mercados confiaban plenamente en los activos inmobiliarios, al considerarse inversiones seguras, dado que las personas solían cumplir con el pago de sus hipotecas.
@@ -11,6 +11,7 @@ Sin embargo, el valor subyacente no reflejaba adecuadamente el riesgo real del m
 
 La correcta valoración de instrumentos derivados, como los swaps, es fundamental, así como también lo es una adecuada estimación del valor del subyacente. En respuesta a estos riesgos, surgieron regulaciones y métricas como CVA (Credit Valuation Adjustment) y XVA, que buscan cuantificar la exposición al riesgo de contraparte en una negociación financiera.
 
+## Objetivo
 En este proyecto, desarrollamos una base de datos con la información necesaria para la valoración de derivados, así como para realizar simulaciones de riesgo utilizando métricas como VaR (Value at Risk) y CVA, bases esenciales para el cálculo de XVA. De forma resumida:
 
 CVA (Credit Valuation Adjustment): mide el riesgo de crédito de la contraparte (probabilidad de que no me pague).
@@ -19,19 +20,19 @@ DVA (Debit Valuation Adjustment): mide el riesgo de crédito propio (probabilida
 
 Llegando a XVA  = CVA − DVA.
 
-# Diagrama entidad relación 
+## Diagrama entidad relación 
 
 ![Imagen gerenerada por Mysql](DER.png)
 
 
-# Base de Datos: DERIVADOS
+## Base de Datos: DERIVADOS
 
 ## Descripción
 La base de datos DERIVADOS modela posiciones financieras de productos derivados, sus flujos de efectivo, los factores de riesgo asociados y los modelos utilizados para su valuación. Todas las tablas se relacionan con la tabla principal `POSICION`.
 
 ---
 
-## Entidad-Relación
+### Entidad-Relación
 - `POSICION` ← principal (PK: id_posicion)
 - `FLUJOS` → relacionada con POSICION (FK: id_posicion)
 - `FACTORES_DE_RIESGO` → relacionada con POSICION (FK: id_posicion)
