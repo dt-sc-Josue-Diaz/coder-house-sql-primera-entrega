@@ -49,9 +49,35 @@ CREATE TABLE IF NOT EXISTS MODELOS (
 );
 
 
-/*
-Datos ficticios demostrativos. 
-*/
+-- Tabla de VALUACIÓN
+CREATE TABLE VALUACION (
+    id_posicion INT PRIMARY KEY,
+    fecha_valuacion DATE NOT NULL,
+    valor_presente DECIMAL(18,2) NOT NULL,
+    metodo_valuacion VARCHAR(100),
+    moneda VARCHAR(10),
+    FOREIGN KEY (id_posicion) REFERENCES POSICION(id_posicion)
+);
+
+-- Tabla de VAR (Valor en Riesgo)
+CREATE TABLE VAR (
+    id_posicion INT PRIMARY KEY,
+    fecha_calculo DATE NOT NULL,
+    var_1d_99 DECIMAL(18,2),
+    var_10d_99 DECIMAL(18,2),
+    metodo_var VARCHAR(50),
+    FOREIGN KEY (id_posicion) REFERENCES POSICION(id_posicion)
+);
+
+-- Tabla de XVA (ajustes por valoración de crédito)
+CREATE TABLE XVA (
+    id_posicion INT PRIMARY KEY,
+    fecha_xva DATE NOT NULL,
+    cva DECIMAL(18,2),  -- Credit Valuation Adjustment
+    dva DECIMAL(18,2),  -- Debit Valuation Adjustment
+    fva DECIMAL(18,2),  -- Funding Valuation Adjustment
+    FOREIGN KEY (id_posicion) REFERENCES POSICION(id_posicion)
+);
 
 INSERT INTO POSICION (operacion, fecha, inicio, fecha_fin, tasa_activa, tasa_pasiva, modelo_valuacion, curva_pago_1, curva_pago_2, curva_descuento_1, curva_descuento_2)
 VALUES 
@@ -105,12 +131,44 @@ VALUES
 (9, 'Monte Carlo', '2.2', 'Monte Carlo con cambio de medida'),
 (10, 'Hull-White', '3.1', 'Versión calibrada para mercado MXN');
 
-SELECT * FROM POSICION;
-SELECT * FROM FLUJOS;
-SELECT * FROM FACTORES_DE_RIESGO;
-SELECT * FROM MODELOS;
+INSERT INTO VALUACION (id_posicion, fecha_valuacion, valor_presente_neto, divisa)
+VALUES
+(1, '2025-01-02', 125000.00, 'MXN'),
+(2, '2025-02-11', 95000.00, 'MXN'),
+(3, '2025-03-02', 110000.00, 'MXN'),
+(4, '2025-01-21', 88000.00, 'MXN'),
+(5, '2025-04-16', 103000.00, 'USD'),
+(6, '2025-05-11', 98000.00, 'MXN'),
+(7, '2025-06-11', 120000.00, 'MXN'),
+(8, '2025-07-16', 89000.00, 'EUR'),
+(9, '2025-08-11', 133000.00, 'USD'),
+(10, '2025-09-06', 87000.00, 'EUR');
 
+INSERT INTO VAR (id_posicion, fecha_calculo, var_1d_99, metodo)
+VALUES
+(1, '2025-01-02', 4000.00, 'Simulación histórica'),
+(2, '2025-02-11', 3800.00, 'Simulación histórica'),
+(3, '2025-03-02', 4500.00, 'Monte Carlo'),
+(4, '2025-01-21', 3000.00, 'Paramétrico'),
+(5, '2025-04-16', 4700.00, 'Simulación histórica'),
+(6, '2025-05-11', 4400.00, 'Monte Carlo'),
+(7, '2025-06-11', 4900.00, 'Monte Carlo'),
+(8, '2025-07-16', 3500.00, 'Paramétrico'),
+(9, '2025-08-11', 5200.00, 'Simulación histórica'),
+(10, '2025-09-06', 3400.00, 'Paramétrico');
 
+INSERT INTO XVA (id_posicion, fecha_xva, cva, dva, fva)
+VALUES
+(1, '2025-01-02', 1200.00, 800.00, 300.00),
+(2, '2025-02-11', 1100.00, 850.00, 250.00),
+(3, '2025-03-02', 1500.00, 950.00, 350.00),
+(4, '2025-01-21', 900.00, 700.00, 200.00),
+(5, '2025-04-16', 1600.00, 1000.00, 400.00),
+(6, '2025-05-11', 1300.00, 900.00, 300.00),
+(7, '2025-06-11', 1700.00, 1100.00, 450.00),
+(8, '2025-07-16', 1000.00, 750.00, 220.00),
+(9, '2025-08-11', 1800.00, 1200.00, 480.00),
+(10, '2025-09-06', 950.00, 700.00, 240.00);
 
 -- FUNCIONES
 DELIMITER //
