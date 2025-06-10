@@ -1,5 +1,5 @@
 Alumno: Luis Josue Díaz Alvarez
-Repositorio para primera entrega de la comisión 75965
+Repositorio de la comisión 75965
 
 # Productos financieros derivados.
 ## Introducción
