@@ -32,14 +32,6 @@ La base de datos DERIVADOS modela posiciones financieras de productos derivados,
 
 ---
 
-### Entidad-Relación
-- `POSICION` ← principal (PK: id_posicion)
-- `FLUJOS` → relacionada con POSICION (FK: id_posicion)
-- `FACTORES_DE_RIESGO` → relacionada con POSICION (FK: id_posicion)
-- `MODELOS` → relacionada con POSICION (FK: id_posicion)
-
----
-
 ## Tablas y campos
 
 ### POSICION
